@@ -19,7 +19,7 @@ function loadGoogleApi(callback) {
 function loadClient() {
     return new Promise((resolve, reject) => {
 
-        gapi.client.setApiKey("APIKEY");
+        gapi.client.setApiKey("");
         gapi.client.load("https://content.googleapis.com/discovery/v1/apis/customsearch/v1/rest")
             .then(function() {
                 console.log("GAPI client loaded for API");
@@ -34,11 +34,11 @@ function loadClient() {
 
 function execute(term, offset) {
     return gapi.client.search.cse.list({
-    "cx": "SEID",
+    "cx": "",
     "exactTerms": term,
     "filter": "0", "start": offset
 }).then(function(response) {
-        return response.result.items;
+        return response.result;
     }).catch(function(err) {
             console.error("Error executing API request", err);
         });
@@ -61,6 +61,11 @@ export function nextPage(){
     search(offsetValue);
 }
 
+function updateMaxResults(number){
+    let a = document.getElementById('maxResults')
+    a.textContent = number
+}
+
 export function search(offset){
     if (offset == 1)
         offsetValue = 1
@@ -81,8 +86,10 @@ export function search(offset){
         try {
             await loadGoogleApi();
             await loadClient();
-            const items = await execute(searchTerm, offset);
+            const result = await execute(searchTerm, offset);
 
+            updateMaxResults(result.queries.request[0].totalResults)
+            const items = result.items
             const promises = items.map(item => searchLink(item.link));
             const results = await Promise.all(promises);
 
