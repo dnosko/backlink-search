@@ -1,0 +1,9 @@
+{
+  "name": "skript",
+  "version": "1.0.0",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "express": "^4.18.2",
+    "puppeteer": "^20.7.3"
+  }
+}
