@@ -2,19 +2,24 @@
 <html>
 <body>
 <script type="module">
-    import { search } from './skript.js';
+    import { search, nextPage } from './skript.js';
 
     function handleSearch() {
-        search();
+        search(1);
+    }
+
+    function handleNextPage() {
+        nextPage();
     }
     window.handleSearch = handleSearch;
+    window.handleNextPage = handleNextPage;
 </script>
 <script src="https://apis.google.com/js/client.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <label for="searchterm">Hľadaný výraz:</label>
 <input type="text" id="searchterm" name="searchterm"/>
 <button onclick="handleSearch()">Hladať</button>
-<button onclick="nextPage()">Ďalšia stránka</button>
+<button onclick="handleNextPage()">Ďalšia stránka</button>
 </body>
 </html>
 

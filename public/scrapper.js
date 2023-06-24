@@ -1,5 +1,14 @@
 const parser = new DOMParser();
 
+export async function searchLink(link) {
+    try {
+        const res = await searchHTMLPage(link, searchTerm);
+        return { taken: res, link: link };
+    } catch (error) {
+        return { taken: 2, link: link };
+    }
+}
+
 export function searchHTMLPage(url, keyword){
     return new Promise((resolve, reject) => {
         downloadHTMLPage(url)

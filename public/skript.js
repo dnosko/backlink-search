@@ -1,5 +1,5 @@
 import {searchHTMLPage} from "./scrapper.js";
-
+var offsetValue;
 function loadGoogleApi(callback) {
     const script = document.createElement('script');
     script.src = 'https://apis.google.com/js/api.js';
@@ -18,7 +18,8 @@ function loadGoogleApi(callback) {
 
 function loadClient() {
     return new Promise((resolve, reject) => {
-        gapi.client.setApiKey("");
+
+        gapi.client.setApiKey("APIKEY");
         gapi.client.load("https://content.googleapis.com/discovery/v1/apis/customsearch/v1/rest")
             .then(function() {
                 console.log("GAPI client loaded for API");
@@ -31,11 +32,11 @@ function loadClient() {
     });
 }
 
-function execute(term) {
+function execute(term, offset) {
     return gapi.client.search.cse.list({
-    "cx": "d13ce0691df644667",
+    "cx": "SEID",
     "exactTerms": term,
-    "filter": "0"
+    "filter": "0", "start": offset
 }).then(function(response) {
         return response.result.items;
     }).catch(function(err) {
@@ -49,9 +50,20 @@ function createTextElement(text, element){
     document.body.appendChild(para)
 }
 
+export function nextPage(){
+    offsetValue = offsetValue + 10
+    if (offsetValue > 100) {
+        window.alert('Ďalšia stránka sa už nedá, vyhľadaj iné slovo')
+        offsetValue = 1
+        return
+    }
 
+    search(offsetValue);
+}
 
-export function search(){
+export function search(offset){
+    if (offset == 1)
+        offsetValue = 1
     let searchTerm = document.getElementById("searchterm").value;
     createTextElement(searchTerm, 'h1')
     let links = []
@@ -69,7 +81,7 @@ export function search(){
         try {
             await loadGoogleApi();
             await loadClient();
-            const items = await execute(searchTerm);
+            const items = await execute(searchTerm, offset);
 
             const promises = items.map(item => searchLink(item.link));
             const results = await Promise.all(promises);
