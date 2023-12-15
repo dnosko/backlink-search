@@ -5,9 +5,10 @@ This Google API will never return more than 100 searches (10 pages).
 ## SETUP 
 1. Setup programmable search engine by Google and get Search Engine ID. You have to setup the pages on which you want to search there.
 2. Enable API at console.cloud.google.com and get APIKEY (https://developers.google.com/explorer-help/code-samples)
-3. Change the search engine ID SEID and APIKEY in skript.js
-4. `npm install`
-5. `cd node_modules/puppetter && npm install`
+3. Set the attribute ´cx´ to search engine ID SEID in function execute() in file  public/skript.js
+4. Assign the API key to ´gapi.client.setApiKey´ in function loadClient in file public/skript.js
+5. `npm install`
+6. `cd node_modules/puppetter && npm install`
 
 ## RUN
 `node server.js`
